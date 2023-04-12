@@ -38,10 +38,9 @@ def create_state():
     """create state"""
     json_data = request.get_json()
     if json_data is None:
-        return {"message": "Not a JSON"}, 400
+        abort(400, 'Not a JSON')
     if json_data.get('name') is None:
-        return {"message": "Missing name"}, 400
-    
+        abort(400, 'Missing name')
     state = State(**json_data)
     state.save()
     return jsonify(state.to_dict()), 201
