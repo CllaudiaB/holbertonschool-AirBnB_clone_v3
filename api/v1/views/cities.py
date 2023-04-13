@@ -9,15 +9,15 @@ from models.city import City
 from flask import jsonify, abort, request
 
 
-@app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
+@app_views.route('/states/<state_id>/cities', methods=['GET'],
+                 strict_slashes=False)
 def get_cities(state_id):
     """Retrieves the list of all City objects of a State"""
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
     all_cities = []
-    cities = state.cities()
-    for city in cities:
+    for city in state.cities:
         all_cities.append(city.to_dict())
     return jsonify(all_cities)
 
@@ -45,12 +45,12 @@ def delete_city(city_id):
 
 @app_views.route('/states/<state_id>/cities', methods=['POST'],
                  strict_slashes=False)
-def create_city(city_id):
+def create_city(state_id):
     """create city"""
-    city = storage.get(City, city_id)
-    if city is None:
+    state = storage.get(State, state_id)
+    if state is None:
         abort(404)
-    
+
     json_data = request.get_json()
     if json_data is None:
         abort(400, 'Not a JSON')
@@ -67,7 +67,7 @@ def update_city(city_id):
     city = storage.get(City, city_id)
     if city is None:
         abort(404)
-    
+
     json_data = request.get_json()
     if json_data is None:
         abort(400, 'Not a JSON')
