@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Create a new view for State objects that handles all default RESTFul API
+"""Create a new view for city objects that handles all default RESTFul API
     actions"""
 from models import storage
 from models import base_model
@@ -12,10 +12,10 @@ from flask import jsonify, abort, request
 @app_views.route('/states/<state_id>/cities', methods=['GET'], strict_slashes=False)
 def get_cities(state_id):
     """Retrieves the list of all City objects of a State"""
-    all_cities = []
     state = storage.get(State, state_id)
     if state is None:
         abort(404)
+    all_cities = []
     cities = state.cities()
     for city in cities:
         all_cities.append(city.to_dict())
@@ -23,7 +23,7 @@ def get_cities(state_id):
 
 
 @app_views.route('/cities/<city_id>', methods=['GET'], strict_slashes=False)
-def error_state(city_id):
+def error_city(city_id):
     """ Retrieves a City object """
     city = storage.get(City, city_id)
     if city is None:
