@@ -59,12 +59,13 @@ def create_review(place_id):
     if json_data.get('user_id') is None:
         abort(400, 'Missing user_id')
 
-    user = storage.get(User, place_id)
+    user = storage.get(User, user_id)
     if user is None:
         abort(404)
     if json_data.get('text') is None:
         abort(400, 'Missing text')
 
+    json_data['user_id'] = user_id
     json_data['place_id'] = place_id
     review = Review(**json_data)
     review.save()
