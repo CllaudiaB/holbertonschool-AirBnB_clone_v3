@@ -61,7 +61,7 @@ def create_place(city_id):
         abort(400, 'Missing user_id')
     if json_data.get('name') is None:
         abort(400, 'Missing name')
-    json_data['city_id'] = city_id
+    json_data['user_id'] = User.user_id
     place = Place(**json_data)
     place.save()
     return jsonify(place.to_dict()), 201
